@@ -33,14 +33,14 @@ router.post('/add', (req, res) => {
 });
 
 router.post('/get', (req, res) => {
-    let {id} = req.body;
+    let {id,page = 1, rows = 5,} = req.body;
     let params = {};
     if (!id || id == null) {
-        params = {isParent: 0};
+        params = {};
     } else {
         params = {_id: id};
     }
-    cards.find(params,(err, data) => {
+    cards.find(params).sort({_id: -1}).skip((page - 1) * rows).limit(rows).exec((err, data) => {
         if (err) {
             res.json({
                 data: err,
