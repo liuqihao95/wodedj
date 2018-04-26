@@ -13,10 +13,10 @@ router.use(
     })
 );
 
-router.use('/users', require("../routes/login"));
+router.use('/users', require("../routes/loginAdmin"));
 
 router.use((req, res, next) => {
-    if (!req.session.user) {
+    if (req.session.user.level.type !== 0) {
         res.json({
             data: "后台未登录",
             code: 409,

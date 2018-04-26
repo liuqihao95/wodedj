@@ -44,24 +44,37 @@ router.post('/getMany', (req, res) => {//前台获得用户信息
     })
 });
 
+router.post('/getSelf', (req, res) => {
+    let userId=req.session.user.userId;
+    users.findOne({userId}, {pwd: 0},(err, data) => {
+        if (err) {
+            res.json({
+                data,
+                code: 500,
+                msg: '查询出错',
+                ret: true
+            })
+        }  else {
+            res.json({
+                data,
+                code: 200,
+                msg: 'success',
+                ret: true
+            })
+        }
+
+    })
+});
+
 router.post('/get', (req, res) => {
-    let {page = 1, rows = 5, type = 1, blong} = req.body;
+    let {blong} = req.body;
     let params = {};
-    if (req.session.user.level.type !== 0) {
-        res.json({
-            data: "你不是管理员",
-            msg: "你没有权限",
-            code: 400,
-            ret: true
-        });
-        return
-    }
     if (blong) {
         params = {blong}
     } else {
         params = {}
     }
-    users.find(params, {pwd: 0}).sort({_id: -1, type}).skip((page - 1) * rows).limit(rows).exec((err, data) => {
+    users.find(params, {pwd: 0},(err, data) => {
         if (err) {
             res.json({
                 data,
