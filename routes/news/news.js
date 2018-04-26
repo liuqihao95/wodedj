@@ -85,10 +85,7 @@ router.post('/getOne', (req, res) => {
             })
         }
         else {
-            console.log(data[0]);
-            console.log(data[0].count);
             let count = (data[0].count) + 1;
-            console.log(count);
             news.update({_id: id}, {$set: {count}}, (err, newData) => {
                 if (err) {
                     res.json({
