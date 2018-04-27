@@ -36,7 +36,7 @@ router.post('/get', (req, res) => {
     let {id,page = 1, rows = 5,} = req.body;
     let params = {};
     if (!id || id == null) {
-        params = {};
+        params = {isParent:0};
     } else {
         params = {_id: id};
     }
